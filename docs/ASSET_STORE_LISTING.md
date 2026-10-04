@@ -2,26 +2,25 @@
 
 ## Core fields
 
-- Name: `Xiph Audio for Godot`
-- Version: `0.2.0`
+- Name: `FLAC Audio Stream`
+- Version: `0.3.0`
 - License: `MIT`
 - Godot version: `4.5 or newer`
 - Repository: `https://github.com/goatchurchprime/godot-xiph-audio`
-- Download: `https://github.com/goatchurchprime/godot-xiph-audio/releases/download/v0.2.0/godot-xiph-audio.zip`
+- Download: `https://github.com/goatchurchprime/godot-xiph-audio/releases/download/v0.3.0/godot-xiph-audio.zip`
 - Demo: `https://goatchurch.itch.io/godot-xiph-audio-demo`
 - Thumbnail: `docs/asset-store-thumbnail.png`
-- Tags: `Audio`, `Opus`, `FLAC`, `GDExtension`, `Cross-platform`
+- Tags: `Audio`, `FLAC`, `GDExtension`, `Cross-platform`
 
 ## Summary
 
-Play Ogg Opus and FLAC files as native Godot AudioStream resources on desktop,
-mobile, and Web.
+Play FLAC files as native Godot AudioStream resources on desktop, mobile, and
+Web.
 
 ## Description
 
-Xiph Audio for Godot is a cross-platform Godot 4 GDExtension for loading and
-playing Ogg Opus (`.opus`) and FLAC (`.flac`) files as native AudioStream
-resources.
+FLAC Audio Stream is a cross-platform Godot 4 GDExtension for loading and
+playing FLAC (`.flac`) files as native `AudioStreamFLAC` resources.
 
 It supports duration reporting, seeking, simultaneous playback, and optional
 looping with a loop offset. Audio is decoded incrementally from compressed
@@ -36,6 +35,9 @@ This addon provides decoding and playback only; it does not provide audio
 encoding or format conversion. Source, documentation, and issue tracking are
 available from the GitHub repository. A live WebAssembly demo is available on
 itch.io.
+
+For Ogg Opus support, use Opus GDExtension by Joyless:
+https://store.godotengine.org/asset/joyless/opus-gdextension/
 
 ## AI-use disclosure
 

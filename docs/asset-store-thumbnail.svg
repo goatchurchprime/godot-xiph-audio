@@ -26,10 +26,10 @@
   </g>
 
   <g font-family="Inter, Noto Sans, DejaVu Sans, sans-serif" fill="#f8fafc">
-    <text x="470" y="250" font-size="72" font-weight="700">Xiph Audio</text>
+    <text x="470" y="250" font-size="72" font-weight="700">FLAC Audio</text>
     <text x="474" y="316" font-size="42" font-weight="500" fill="#a9bad1">for Godot 4</text>
     <rect x="474" y="361" width="500" height="8" rx="4" fill="url(#accent)"/>
-    <text x="474" y="440" font-size="37" font-weight="600">Ogg Opus + FLAC playback</text>
+    <text x="474" y="440" font-size="37" font-weight="600">Lossless FLAC playback</text>
     <text x="474" y="500" font-size="27" fill="#c9d4e3">Native AudioStream resources · Incremental decoding</text>
   </g>
 

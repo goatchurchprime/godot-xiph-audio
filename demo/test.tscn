@@ -39,11 +39,11 @@ theme_override_constants/separation = 12
 [node name="Title" type="Label" parent="Panel/Margin/VBox" unique_id=1224535850]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Xiph Audio Stream Playground"
+text = "FLAC Audio Stream Playground"
 
 [node name="Intro" type="Label" parent="Panel/Margin/VBox" unique_id=948564541]
 layout_mode = 2
-text = "Compare addon-decoded Opus and FLAC with Godot's native Ogg Vorbis and MP3 streams using the same player controls."
+text = "Compare addon-decoded FLAC with Godot's native Ogg Vorbis and MP3 streams using the same player controls."
 autowrap_mode = 2
 
 [node name="TrackRow" type="HBoxContainer" parent="Panel/Margin/VBox" unique_id=1403486322]

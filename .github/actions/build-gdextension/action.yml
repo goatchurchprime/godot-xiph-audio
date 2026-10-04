@@ -1,5 +1,5 @@
 name: Build GDExtension
-description: Build one Xiph Audio for Godot platform/target combination
+description: Build one FLAC-only Xiph Audio platform/target combination
 inputs:
   platform: { description: Target platform, required: true }
   target: { description: Godot build target, required: true }
@@ -26,8 +26,6 @@ runs:
         SCONS_CACHE: ${{ github.workspace }}/.scons-cache
       run: |
         params="platform=${{ inputs.platform }} target=${{ inputs.target }} arch=${{ inputs.arch }} ${{ inputs.additional }}"
-        scons build_ogg $params
-        scons build_opus $params
         scons build_flac $params
         scons $params
     - name: Verify bundled Linux dependencies
@@ -35,8 +33,8 @@ runs:
       shell: bash
       run: |
         file addons/xiph_audio/bin/*.so
-        if readelf -d addons/xiph_audio/bin/*.so | grep NEEDED | grep -E 'lib(FLAC|opus|ogg)'; then
-          echo 'A Xiph dependency was linked dynamically' >&2
+        if readelf -d addons/xiph_audio/bin/*.so | grep NEEDED | grep -E 'libFLAC'; then
+          echo 'libFLAC was linked dynamically' >&2
           exit 1
         fi
     - name: Remove non-runtime Windows files

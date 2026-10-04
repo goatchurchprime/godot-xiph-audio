@@ -1,51 +1,40 @@
-# Xiph Audio for Godot
+# FLAC support for Godot
 
-A cross-platform GDExtension that makes Xiph.Org audio formats first-class
-Godot `AudioStream` resources. It currently supports Ogg Opus (`.opus`) through
-`AudioStreamOggOpus` and FLAC (`.flac`) through `AudioStreamFLAC`.
+A cross-platform GDExtension that loads FLAC (`.flac`) files as native Godot
+`AudioStreamFLAC` resources.
 
 ```gdscript
-var voice := load("res://voice.opus") as AudioStreamOggOpus
 var music := load("res://music.flac") as AudioStreamFLAC
 $AudioStreamPlayer.stream = music
 $AudioStreamPlayer.play()
 ```
 
-Both resources support duration reporting, playback, seeking, simultaneous
-playbacks, and optional looping with a loop offset. Compressed bytes remain in
-the resource and are decoded incrementally, so FLAC conserves project and
-resident compressed-data memory instead of being expanded into a complete WAV
-buffer by this addon.
+Streams support duration reporting, playback, seeking, simultaneous playbacks,
+and optional looping with a loop offset. Compressed bytes remain in the
+resource and are decoded incrementally instead of being expanded into a
+complete WAV buffer.
 
-This project is independent of [TwoVoIP](https://github.com/goatchurchprime/two-voip-godot-4),
-which handles live raw Opus packets. Xiph Audio handles stored audio files. It
-provides decoding/playback only; it does not replace Godot's `save_to_wav()`
-with audio conversion or encoding APIs.
+## Opus support
+
+This addon no longer provides Ogg Opus playback. For `.opus` files, use the
+human-maintained [Opus GDExtension](https://github.com/Joy-less/OpusGdextension),
+available from the
+[Godot Asset Store](https://store.godotengine.org/asset/joyless/opus-gdextension/).
+It provides `AudioStreamOpus` with dedicated editor importing, metadata, and
+preview support.
+
+The previous `AudioStreamOggOpus` implementation remains in the `v0.2.0`
+release for historical reference, but new projects should use Opus GDExtension.
 
 ## Install
 
-Download `godot-xiph-audio.zip` from a release and extract it at the root of a
-Godot project. It contains only `addons/xiph_audio`. The GDExtension loads
-automatically; there is no EditorPlugin to enable.
+Download the release archive and extract it at the root of a Godot project. It
+contains only `addons/xiph_audio`. The GDExtension loads automatically; there
+is no EditorPlugin to enable.
 
 Release archives support Linux and Windows x86-64, universal macOS, iOS arm64,
 all four Android architectures, and threaded or single-threaded Web exports.
 The minimum supported engine version is Godot 4.5.
-
-## Migrating from Godot Ogg Opus
-
-The repository and Asset Library entry are now named **Xiph Audio for Godot**.
-Replace `addons/ogg_opus` with `addons/xiph_audio`; do not keep both copies.
-Existing `.opus` files and `AudioStreamOggOpus` scripts/resources remain
-compatible. The native filename and descriptor changed internally and require
-no script changes.
-
-GitHub redirects links and clones after a repository rename. Existing local
-clones can update their remote explicitly:
-
-```bash
-git remote set-url origin https://github.com/goatchurchprime/godot-xiph-audio.git
-```
 
 ## Build and test on NixOS
 
@@ -59,54 +48,44 @@ Distribution builds use SCons:
 
 ```bash
 python -m pip install scons
-scons build_ogg platform=linux target=template_debug arch=x86_64
-scons build_opus platform=linux target=template_debug arch=x86_64
 scons build_flac platform=linux target=template_debug arch=x86_64
 scons platform=linux target=template_debug arch=x86_64
 ```
 
-All codec dependencies are statically linked into one GDExtension binary.
+libFLAC is statically linked into the GDExtension binary.
 
 ## Bundled dependency versions
 
 Release builds use the Git submodule commits pinned by this repository. They do
 not automatically follow upstream branches, which keeps rebuilds reproducible.
-The exact commit link is authoritative when a checkout is newer than an
-upstream numbered release.
 
 | Dependency | Version used | Pinned source | Release Date |
 | --- | --- | --- | --- |
 | [libFLAC](https://github.com/xiph/flac) | 1.5.0 | [`1507800d`](https://github.com/xiph/flac/commit/1507800de4b70e21be71f38caa0d9079d0bc6e45) | 11 February 2025 |
-| [libogg](https://github.com/xiph/ogg) | 1.3.6 development checkout | [`06a5e026`](https://github.com/xiph/ogg/commit/06a5e0262cdc28aa4ae6797627a783b5010440f0) | 2 March 2026 |
-| [libopus](https://github.com/xiph/opus) | upstream development checkout | [`503d81b1`](https://github.com/xiph/opus/commit/503d81b138d76621aae4b12786e90de48aa8db3a) | 11 September 2026 |
-| [libopusfile](https://github.com/xiph/opusfile) | v0.12 + 59 commits | [`6dfd29e7`](https://github.com/xiph/opusfile/commit/6dfd29e7adb87f2e193575fc3fa88cbf1a0b27df) | 28 March 2026 |
 | [godot-cpp](https://github.com/godotengine/godot-cpp) | Godot 4.5 branch checkout | [`27d9dd23`](https://github.com/godotengine/godot-cpp/commit/27d9dd23c83871e0619fca5dc2cddfbfd69e926a) | 25 August 2026 |
 
-These are the versions used by release `v0.2.0`. Updating a submodule is an
-explicit maintenance change followed by the complete platform build matrix,
-rather than an unreviewed update from an upstream `main` branch.
+Updating either submodule is an explicit maintenance change followed by the
+complete platform build matrix.
 
 ## Interactive demo and conformance fixtures
 
-The `demo` project provides a shared play/pause, seek, position, and loop UI for
-Ogg Opus, FLAC, and any optional native Godot WAV, Ogg Vorbis, or MP3 comparison
-files. See `demo/README.md` for helpers that create local same-source comparison
-files and download a focused CC0 FLAC conformance set.
+The `demo` project provides shared play/pause, seek, position, and loop controls
+for FLAC and Godot's native WAV, Ogg Vorbis, and MP3 streams. See
+`demo/README.md` for the focused CC0 FLAC conformance set.
 
 ## Releases and Godot Asset Store
 
 Each GitHub Actions build produces `godot-xiph-audio.zip`. Tags publish the
 same archive to a GitHub release. Use that release archive—not GitHub's source
-archive—as the Asset Store download, since source archives omit compiled
-binaries and submodule contents.
+archive—because source archives omit compiled binaries and submodule contents.
 
-Suggested fields are **Xiph Audio for Godot**, tags **Audio**, **Opus**,
-**FLAC**, **GDExtension**, and **Cross-platform**, license **MIT**, and minimum
-Godot version **4.5**. The 16:9 listing thumbnail is
+The current Godot Asset Store entry is
+[Xiph Audio Streams](https://store.godotengine.org/asset/goatchurch/xiph-audio-streams/).
+Its next version will be FLAC-only. The 16:9 listing thumbnail is
 `docs/asset-store-thumbnail.png`.
 
-Third-party sources retain their licenses: FLAC, Opus, opusfile, and libogg
-(BSD-style), and godot-cpp (MIT). See the packaged notices for details.
+Third-party sources retain their licenses: libFLAC (BSD-style) and godot-cpp
+(MIT). See the packaged notices for details.
 
 ## AI assistance
 

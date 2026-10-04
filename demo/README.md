@@ -1,20 +1,7 @@
-# Interactive audio demo
+# Interactive FLAC demo
 
-Run this Godot project to compare seek, playback, and looping across the addon
-and Godot's native audio streams. The stream picker always includes the bundled
-Ogg Opus and 39 kHz FLAC examples, plus Ogg Vorbis and MP3 versions of the
-Godot demo intro.
-
-To make local WAV, Ogg Vorbis, and MP3 versions of `sound.opus` for a
-same-source UI comparison:
-
-```bash
-bash tools/make_demo_comparisons.sh
-```
-
-Those generated files are intentionally ignored: the WAV alone is large, and
-transcoding an already-lossy source is useful for UI testing rather than audio
-quality evaluation.
+Run this Godot project to compare seek, playback, and looping between
+addon-decoded FLAC and Godot's native Ogg Vorbis and MP3 streams.
 
 To download a focused FLAC conformance set covering 96 kHz/24-bit, 5.1,
 unknown total length, and mono streams:

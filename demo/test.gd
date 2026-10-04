@@ -1,10 +1,7 @@
 extends Control
 
 const TRACKS := [
-	["Ogg Opus — demo soundtrack", "res://sound_samples/sound.opus"],
 	["FLAC — 39 kHz conformance sample", "res://sound_samples/20 - samplerate 39kHz.flac"],
-	["WAV — same-track comparison", "res://sound_samples/sound.wav"],
-	["Ogg Vorbis — same-track comparison", "res://sound_samples/sound.ogg"],
 	["MP3 — Intro demo comparison", "res://sound_samples/Intro.mp3"],
 	["Ogg Vorbis — Intro demo file", "res://sound_samples/Intro.ogg"],
 ]

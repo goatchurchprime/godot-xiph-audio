@@ -25,7 +25,7 @@ func test_stream(path: String, expected_type: String) -> bool:
 	if player.get_playback_position() < 0.5:
 		push_error("Seek failed for " + path)
 		return false
-	print("XIPH_AUDIO_STREAM_OK type=", expected_type, " length=", stream.get_length(), " channels=", stream.call("get_channel_count"))
+	print("FLAC_STREAM_OK type=", expected_type, " length=", stream.get_length(), " channels=", stream.call("get_channel_count"))
 	player.stop()
 	player.stream = null
 	remove_child(player)
@@ -34,13 +34,10 @@ func test_stream(path: String, expected_type: String) -> bool:
 	return true
 
 func _ready() -> void:
-	if not await test_stream("res://fixture.opus", "AudioStreamOggOpus"):
-		get_tree().quit(1)
-		return
 	if not await test_stream("res://fixture.flac", "AudioStreamFLAC"):
 		get_tree().quit(1)
 		return
 	# Let the AudioServer release its playback reference before extension unload.
 	await get_tree().create_timer(0.1).timeout
-	print("XIPH_AUDIO_SMOKE_OK")
+	print("FLAC_SMOKE_OK")
 	get_tree().quit()

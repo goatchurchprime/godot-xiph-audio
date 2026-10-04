@@ -4,7 +4,7 @@ import os
 
 from SCons.Script import ARGUMENTS, Default, Glob, SConscript
 
-from tools.scons_helpers import build_cmake_dependency, generated_include_path, library_path, output_library
+from tools.scons_helpers import build_cmake_dependency, library_path, output_library
 
 
 # Keep godot-cpp small and deterministic unless a caller explicitly selects a
@@ -25,32 +25,21 @@ output_dir = ARGUMENTS.get("addon_output_dir", "addons/xiph_audio/bin")
 env.Append(
     CPPPATH=[
         "src",
-        "thirdparty/ogg/include",
-        generated_include_path(env, "thirdparty/ogg"),
-        "thirdparty/opus/include",
-        "thirdparty/opusfile/include",
         "thirdparty/flac/include",
     ],
     # FLAC__NO_DLL prevents Windows headers from marking libFLAC symbols as
     # dllimport when we link the codec statically into the GDExtension.
     CPPDEFINES=["OP_HAVE_LRINTF", "FLAC__NO_DLL"],
     LIBPATH=[
-        library_path(env, "thirdparty/opus"),
-        library_path(env, "thirdparty/ogg"),
         library_path(env, "thirdparty/flac", "src/libFLAC"),
     ],
-    LIBS=["FLAC", "opus", "ogg"],
+    LIBS=["FLAC"],
 )
 
 if env["platform"] != "windows":
     env.Append(LIBS=["m"])
 
-sources = Glob("src/*.cpp") + [
-    "thirdparty/opusfile/src/info.c",
-    "thirdparty/opusfile/src/internal.c",
-    "thirdparty/opusfile/src/opusfile.c",
-    "thirdparty/opusfile/src/stream.c",
-]
+sources = Glob("src/*.cpp")
 
 library = env.SharedLibrary(
     target=output_library(env, output_dir),
@@ -58,40 +47,6 @@ library = env.SharedLibrary(
 )
 env.NoCache(library)
 Default(library)
-
-
-def build_ogg(target, source, env):
-    return build_cmake_dependency(
-        env,
-        "thirdparty/ogg",
-        [
-            "-DBUILD_SHARED_LIBS=OFF",
-            "-DINSTALL_DOCS=OFF",
-            "-DINSTALL_PKG_CONFIG_MODULE=OFF",
-            "-DINSTALL_CMAKE_PACKAGE_MODULE=OFF",
-        ],
-    )
-
-
-def build_opus(target, source, env):
-    options = [
-        "-DBUILD_SHARED_LIBS=OFF",
-        "-DOPUS_BUILD_SHARED_LIBRARY=OFF",
-        "-DOPUS_BUILD_TESTING=OFF",
-        "-DOPUS_BUILD_PROGRAMS=OFF",
-        "-DOPUS_BUILD_EXAMPLES=OFF",
-    ]
-    # Opus overrides CMAKE_C_FLAGS with CMAKE_MSVC_RUNTIME_LIBRARY after
-    # project configuration. Select its native option so it matches the /MT
-    # runtime used by godot-cpp and the opusfile sources.
-    if env["platform"] == "windows" and env.get("use_static_cpp", True) and not env.get("debug_crt", False):
-        options.append("-DOPUS_STATIC_RUNTIME=ON")
-
-    return build_cmake_dependency(
-        env,
-        "thirdparty/opus",
-        options,
-    )
 
 
 def build_flac(target, source, env):
@@ -119,6 +74,4 @@ def build_flac(target, source, env):
     return build_cmake_dependency(env, "thirdparty/flac", options)
 
 
-env.Command("build_ogg", [], build_ogg)
-env.Command("build_opus", [], build_opus)
 env.Command("build_flac", [], build_flac)

@@ -4,7 +4,6 @@ compatibility_minimum = "4.5"
 reloadable = true
 
 [icons]
-AudioStreamOggOpus = "res://addons/xiph_audio/icons/audio_stream_ogg_opus.svg"
 AudioStreamFLAC = "res://addons/xiph_audio/icons/audio_stream_flac.svg"
 
 [libraries]
